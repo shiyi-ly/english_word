@@ -41,7 +41,7 @@ public class VocabularyServiceImpl extends ServiceImpl<VocabularyMapper, Vocabul
         List<VocabularyEntity> vocabularyEntities = new ArrayList<>();
         Map<Integer, Integer> map = new HashMap<>();
         for (int i = 0; i < vocabularyNum; i++) {
-            VocabularyEntity entity = entities.get(getRandom(map, vocabularyNum));
+            VocabularyEntity entity = entities.get(getRandom(map, entities.size()));
             vocabularyEntities.add(entity);
         }
         return vocabularyEntities;
@@ -52,21 +52,12 @@ public class VocabularyServiceImpl extends ServiceImpl<VocabularyMapper, Vocabul
      */
     private int getRandom(Map<Integer, Integer> map, Integer vocabularyNum) {
         while (true) {
-            int number = new Random().nextInt(vocabularyNum) + 1;
+            int number = new Random().nextInt(vocabularyNum);
             Integer integer = map.get(number);
             if (integer == null) {
                 map.put(number, 0);
                 return number;
             }
         }
-    }
-
-    public static void main(String[] args) {
-        List<Integer> list = new ArrayList<>();
-        list.add(1);
-        list.add(2);
-        System.out.println(list.size());
-        list.remove(0);
-        System.out.println(list.size());
     }
 }
