@@ -62,7 +62,8 @@ public class CodeGenerator {
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
         strategy.setRestControllerStyle(true);
         strategy.setEntityTableFieldAnnotationEnable(true);
-        strategy.setInclude("sys_user");
+        strategy.setInclude("vocabulary_everyday_record");
+        strategy.setEntityLombokModel(true);
         mpg.setStrategy(strategy);
 
         mpg.execute();

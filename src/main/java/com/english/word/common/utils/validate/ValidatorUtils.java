@@ -5,6 +5,7 @@ import com.english.word.common.exception.BusinessException;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
+import java.util.List;
 import java.util.Set;
 
 
@@ -33,5 +34,12 @@ public class ValidatorUtils {
             constraintViolations.stream().findFirst().ifPresent(constraint -> msg.append(constraint.getMessage()));
             throw new BusinessException(msg.toString());
         }
+    }
+
+    public static boolean nonNullAndEmpty(Object object) {
+        if (object instanceof List) {
+            return ((List) object).size() > 0;
+        }
+        return object != null && !object.equals("");
     }
 }
