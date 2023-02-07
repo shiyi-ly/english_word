@@ -2,13 +2,11 @@ package com.english.word.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.english.word.common.exception.BusinessException;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.english.word.common.utils.validate.ValidatorUtils;
 import com.english.word.entity.mybatis.VocabularyEntity;
 import com.english.word.mapper.VocabularyMapper;
 import com.english.word.service.VocabularyService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.google.common.collect.Lists;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -39,10 +37,13 @@ public class VocabularyServiceImpl extends ServiceImpl<VocabularyMapper, Vocabul
             return entities;
         }
         List<VocabularyEntity> vocabularyEntities = new ArrayList<>();
-        Map<Integer, Integer> map = new HashMap<>();
+//        Map<Integer, Integer> map = new HashMap<>();
         for (int i = 0; i < vocabularyNum; i++) {
-            VocabularyEntity entity = entities.get(getRandom(map, entities.size()));
+            int number = new Random().nextInt(entities.size());
+            VocabularyEntity entity = entities.get(number);
+//            VocabularyEntity entity = entities.get(getRandom(map, entities.size()));
             vocabularyEntities.add(entity);
+            entities.remove(entity);
         }
         return vocabularyEntities;
     }
