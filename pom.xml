@@ -134,6 +134,13 @@
             <version>${hibernate-validator.version}</version>
         </dependency>
 
+        <!--spring mail 邮箱模块-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+
+
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>

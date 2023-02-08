@@ -1,11 +1,11 @@
 package com.english.word.task;
 
+import com.alibaba.fastjson.JSON;
 import com.english.word.entity.mybatis.SysUserConfigEntity;
+import com.english.word.entity.mybatis.SysUserEntity;
 import com.english.word.entity.mybatis.VocabularyEntity;
 import com.english.word.entity.mybatis.VocabularyEverydayRecordEntity;
-import com.english.word.service.SysUserConfigService;
-import com.english.word.service.VocabularyEverydayRecordService;
-import com.english.word.service.VocabularyService;
+import com.english.word.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +27,10 @@ public class VocabularyEveryDay {
     private VocabularyEverydayRecordService everydayRecordService;
     @Autowired
     private VocabularyService vocabularyService;
+    @Autowired
+    private IMailService iMailService;
+    @Autowired
+    private SysUserService userService;
 
     /**
      * 每天8点半随机推送10个单词，不重复
@@ -43,6 +47,7 @@ public class VocabularyEveryDay {
             Integer categoryId = entity.getCategoryId();
             // 条数
             Integer vocabularyNum = entity.getVocabularyNum();
+            SysUserEntity userEntity = userService.getById(entity.getUserId());
             // 查询用户已经学习过哪些题了
             List<VocabularyEverydayRecordEntity> vocabularyEverydayRecordEntities =
                     everydayRecordService.listByUserId(entity.getUserId());
@@ -55,6 +60,7 @@ public class VocabularyEveryDay {
             List<VocabularyEverydayRecordEntity> recordEntities = new ArrayList<>();
             vocabularyEntities.forEach(x -> recordEntities.add(new VocabularyEverydayRecordEntity(x, entity.getUserId())));
             boolean b = everydayRecordService.saveBatch(recordEntities);
+            iMailService.sendSimpleMailMessage(userEntity.getDescription(), "每日必读单词", JSON.toJSONString(recordEntities));
             log.info("用户：{}, 内容:{}, 保存成功：{}", entity.getUserId(),recordEntities, b);
         }
     }
